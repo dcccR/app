@@ -3,7 +3,7 @@ library(iNEXT)
 
 # UI 程式碼
 ui <- fluidPage(
-  titlePanel("River Species Diversity Analysis"),
+  titlePanel("臺灣河川樣站生物多樣性分析"),
   
   sidebarLayout(
     sidebarPanel(
@@ -16,7 +16,7 @@ ui <- fluidPage(
     ),
     
     mainPanel(
-      h3("分析結果"),
+      h3("iNEXT分析結果"),
       verbatimTextOutput("summary"),
       plotOutput("p"),
       verbatimTextOutput("good")
@@ -150,7 +150,7 @@ server <- function(input, output) {
     
     # 在這裡進行任何其他後續運算
     output$message <- renderUI({
-      "已完成運算，請輸入期望的物種豐富度"
+      "已完成分析"
     })
     
     output$alpha_selector <- renderUI({
@@ -206,7 +206,7 @@ server <- function(input, output) {
     
     output$code <- renderUI({
       if (!is.null(input$alpha)) {
-        textInput("c", "河川代碼:")
+        selectInput("c", "請選擇河川代碼:",river)
       }
     })
     
@@ -278,9 +278,11 @@ server <- function(input, output) {
           k[i] = bias_function(a[[i]],true_ratio)
         }
         
-        good_site = "以上為最佳樣站組合，物種組成偏誤值:"
+        good_site = paste0("以上為最佳樣站組合，物種組成偏誤值:",min(k)*100,"%")
         
-        list(colnames(a[[which.min(k)]]),c(good_site,min(k)))
+        species_num = paste0("預測物種數為:")
+        
+        list(colnames(a[[which.min(k)]]),c(good_site,species_num))
       }
     })
     
