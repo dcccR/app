@@ -217,7 +217,7 @@ server <- function(input, output) {
         if (!is.na(input$c) && !is.na(input$t)) {
           river_num <- which(river == input$c)
           
-          site_selection_result <- function(x, t, n = 100) {
+          site_selection_result <- function(x, t, n = 1000000) {
             total_site_selection <- list()
             
             withProgress(message = 'Calculating...', value = 0, {
